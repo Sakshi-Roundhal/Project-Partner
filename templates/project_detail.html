@@ -1,0 +1,35 @@
+<h1>{{ project.title }}</h1>
+
+<p>
+Description:
+{{ project.description }}
+</p>
+
+<p>
+Owner:
+{{ project.owner }}
+</p>
+
+<p>
+Skills:
+{{ project.required_skills }}
+</p>
+
+<p>
+Max Members:
+{{ project.max_members }}
+</p>
+
+{% if request.user == project.owner %}
+
+    <button>
+        Edit Project
+    </button>
+
+{% else %}
+
+    <a href="{% url 'apply_to_join' project.id %}">
+    Apply To Join
+    </a>
+
+{% endif %}

@@ -1,0 +1,57 @@
+<form method="GET">
+
+    <input
+        type="text"
+        name="q"
+        placeholder="Search Project"
+    >
+
+    <button type="submit">
+        Search
+    </button>
+
+</form>
+
+<h1>Project Partner</h1>
+
+<a href="/project/create/">
+    Create Project
+</a>
+
+|
+
+<a href="/projects/">
+    Browse Projects
+</a>
+
+|
+
+<a href="/admin/">
+    Admin
+</a>
+
+<hr>
+
+<h1>Browse Projects</h1>
+
+{% for project in projects %}
+
+<h3>{{ project.title }}</h3>
+
+<p>
+Required Skills:
+{{ project.required_skills }}
+</p>
+
+<p>
+Owner:
+{{ project.owner }}
+</p>
+
+<a href="{% url 'project_detail' project.id %}">
+    View Project
+</a>
+
+<hr>
+
+{% endfor %}
