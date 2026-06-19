@@ -1,13 +1,16 @@
-<h1>Login</h1>
+{% extends "base.html" %}
 
-<form method="POST">
+{% block content %}
+<div class="wrap form-page">
+    <section class="form-card">
+        <p class="form-card__eyebrow">Account Access</p>
+        <h1>Login</h1>
 
-    {% csrf_token %}
-
-    {{ form.as_p }}
-
-    <button type="submit">
-        Login
-    </button>
-
-</form>
+        <form method="POST" class="djform">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn--primary btn--block">Login</button>
+        </form>
+    </section>
+</div>
+{% endblock %}

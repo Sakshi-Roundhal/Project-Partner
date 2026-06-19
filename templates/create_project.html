@@ -1,13 +1,17 @@
-<h1>Create Project</h1>
+{% extends "base.html" %}
 
-<form method="POST">
+{% block content %}
+<div class="wrap form-page">
+    <section class="form-card">
+        <p class="form-card__eyebrow">Post a new listing</p>
+        <h1>Create Project</h1>
+        <p class="form-card__sub">Describe your project and required skills.</p>
 
-    {% csrf_token %}
-
-    {{ form.as_p }}
-
-    <button type="submit">
-        Create
-    </button>
-
-</form>
+        <form method="POST" class="djform">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn--primary">Create</button>
+        </form>
+    </section>
+</div>
+{% endblock %}

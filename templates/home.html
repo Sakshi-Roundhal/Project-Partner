@@ -1,44 +1,43 @@
-<h1>Project Partner</h1>
+{% extends "base.html" %}
 
-{% if user.is_authenticated %}
+{% block content %}
+<div class="wrap">
+    <section class="hero">
+        <div>
+            <p class="hero__eyebrow">Project Collaboration Hub</p>
+            <h1>Project <span class="accent">Partner</span></h1>
 
-    <h2>Welcome {{ user.username }}</h2>
+            {% if user.is_authenticated %}
+                <p class="hero__lede">Welcome back, <span class="hero__welcome-name">{{ user.username }}</span>. Ready to build something new?</p>
+                <div class="hero__actions">
+                    <a href="{% url 'create_project' %}" class="btn btn--primary">Create Project</a>
+                    <a href="{% url 'browse_projects' %}" class="btn btn--ghost">Browse Projects</a>
+                    <a href="{% url 'dashboard' %}" class="btn btn--amber">Dashboard</a>
+                </div>
+            {% else %}
+                <p class="hero__lede">Find teammates, discover student projects, and ship together.</p>
+                <div class="hero__actions">
+                    <a href="{% url 'register' %}" class="btn btn--primary">Register</a>
+                    <a href="{% url 'login' %}" class="btn btn--ghost">Login</a>
+                    <a href="{% url 'browse_projects' %}" class="btn btn--amber">Browse Projects</a>
+                </div>
+            {% endif %}
+        </div>
 
-    <a href="/project/create/">
-        Create Project
-    </a>
-
-    <br><br>
-
-    <a href="/projects/">
-        Browse Projects
-    </a>
-
-    <br><br>
-
-    <form action="/logout/" method="post">
-    {% csrf_token %}
-    <button type="submit">
-        Logout
-    </button>
-    </form>
-
-    <a href="/dashboard/">
-    Dashboard
-    </a>
-
-    <br><br>
-
-{% else %}
-
-    <a href="/register/">
-        Register
-    </a>
-
-    <br><br>
-
-    <a href="/login/">
-        Login
-    </a>
-
-{% endif %}
+        <div class="cork" aria-hidden="true">
+            <article class="pinned-card pinned-card--a">
+                <h3 class="pinned-card__title">Campus App Redesign</h3>
+                <p class="pinned-card__meta">UI, Django, Frontend</p>
+            </article>
+            <article class="pinned-card pinned-card--b">
+                <h3 class="pinned-card__title">AI Study Assistant</h3>
+                <p class="pinned-card__meta">ML, Python</p>
+            </article>
+            <article class="pinned-card pinned-card--c">
+                <h3 class="pinned-card__title">Event Finder</h3>
+                <p class="pinned-card__meta">Backend, APIs</p>
+            </article>
+        </div>
+    </section>
+</div>
+{% endblock %}

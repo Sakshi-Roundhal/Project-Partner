@@ -1,35 +1,39 @@
-<h1>{{ project.title }}</h1>
+{% extends "base.html" %}
 
-<p>
-Description:
-{{ project.description }}
-</p>
+{% block content %}
+<div class="wrap">
+    <div class="detail-layout">
+        <article class="detail-card">
+            <p class="detail-card__owner">Owner: <strong>{{ project.owner }}</strong></p>
+            <h1>{{ project.title }}</h1>
 
-<p>
-Owner:
-{{ project.owner }}
-</p>
+            <p class="detail-card__section-label">Description</p>
+            <p>{{ project.description }}</p>
 
-<p>
-Skills:
-{{ project.required_skills }}
-</p>
+            <p class="detail-card__section-label">Skills</p>
+            <div class="tag-row">
+                <span class="tag tag--pine">{{ project.required_skills }}</span>
+            </div>
 
-<p>
-Max Members:
-{{ project.max_members }}
-</p>
+            <p class="detail-card__section-label">Max Members</p>
+            <p>{{ project.max_members }}</p>
 
-{% if request.user == project.owner %}
+            {% if request.user == project.owner %}
+                <button type="button" class="btn btn--ghost">Edit Project</button>
+            {% else %}
+                <a href="{% url 'apply_to_join' project.id %}" class="btn btn--primary">Apply To Join</a>
+            {% endif %}
+        </article>
 
-    <button>
-        Edit Project
-    </button>
-
-{% else %}
-
-    <a href="{% url 'apply_to_join' project.id %}">
-    Apply To Join
-    </a>
-
-{% endif %}
+        <aside class="detail-sidebar">
+            <div class="stat-box">
+                <p class="stat-box__label">Capacity</p>
+                <p class="stat-box__value">{{ project.max_members }}</p>
+            </div>
+            <div class="owner-note">
+                This project is open for collaboration.
+            </div>
+        </aside>
+    </div>
+</div>
+{% endblock %}

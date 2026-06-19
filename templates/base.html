@@ -1,0 +1,64 @@
+{% load static %}<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{% block title %}Project Partner{% endblock %}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+
+<div class="board-texture" aria-hidden="true"></div>
+
+<header class="site-header">
+  <div class="wrap site-header__inner">
+    <a href="{% url 'home' %}" class="brand">
+      <span class="brand__mark">PP</span>
+      <span class="brand__name">Project<em>Partner</em></span>
+    </a>
+
+    <nav class="main-nav">
+      {% if user.is_authenticated %}
+        <a href="{% url 'browse_projects' %}" class="main-nav__link{% if request.resolver_match.url_name == 'browse_projects' %} is-active{% endif %}">Browse</a>
+        <a href="{% url 'create_project' %}" class="main-nav__link{% if request.resolver_match.url_name == 'create_project' %} is-active{% endif %}">Post a project</a>
+        <a href="{% url 'dashboard' %}" class="main-nav__link{% if request.resolver_match.url_name == 'dashboard' %} is-active{% endif %}">Dashboard</a>
+        <span class="main-nav__user">{{ user.username }}</span>
+        <form action="{% url 'logout' %}" method="post" class="inline-form">
+          {% csrf_token %}
+          <button type="submit" class="btn btn--ghost btn--sm">Log out</button>
+        </form>
+      {% else %}
+        <a href="{% url 'browse_projects' %}" class="main-nav__link{% if request.resolver_match.url_name == 'browse_projects' %} is-active{% endif %}">Browse</a>
+        <a href="{% url 'login' %}" class="btn btn--ghost btn--sm">Log in</a>
+        <a href="{% url 'register' %}" class="btn btn--primary btn--sm">Sign up</a>
+      {% endif %}
+    </nav>
+  </div>
+</header>
+
+{% if messages %}
+<div class="wrap">
+  <ul class="messages">
+    {% for message in messages %}
+      <li class="messages__item messages__item--{{ message.tags }}">{{ message }}</li>
+    {% endfor %}
+  </ul>
+</div>
+{% endif %}
+
+<main class="site-main">
+  {% block content %}{% endblock %}
+</main>
+
+<footer class="site-footer">
+  <div class="wrap site-footer__inner">
+    <span>Project Partner &mdash; find people to build with.</span>
+    <a href="{% url 'admin:index' %}" class="site-footer__admin">Admin</a>
+  </div>
+</footer>
+
+</body>
+</html>

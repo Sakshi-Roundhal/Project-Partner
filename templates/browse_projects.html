@@ -1,57 +1,44 @@
-<form method="GET">
+{% extends "base.html" %}
 
-    <input
-        type="text"
-        name="q"
-        placeholder="Search Project"
-    >
+{% block content %}
+<div class="wrap">
+    <div class="section-head">
+        <h1>Browse Projects</h1>
+        <p class="section-head__count">{{ projects|length }} listed</p>
+    </div>
 
-    <button type="submit">
-        Search
-    </button>
+    <form method="GET" class="search-bar">
+        <input type="text" name="q" class="search-bar__input" placeholder="Search projects" value="{{ request.GET.q }}">
+        <button type="submit" class="btn btn--ghost">Search</button>
+    </form>
 
-</form>
+    {% if projects %}
+        <div class="card-grid">
+            {% for project in projects %}
+                <article class="project-card">
+                    <h3 class="project-card__title">
+                        <a href="{% url 'project_detail' project.id %}">{{ project.title }}</a>
+                    </h3>
 
-<h1>Project Partner</h1>
+                    <p class="project-card__owner">Owner: <strong>{{ project.owner }}</strong></p>
 
-<a href="/project/create/">
-    Create Project
-</a>
+                    <div class="tag-row">
+                        <span class="tag tag--pine">{{ project.required_skills }}</span>
+                    </div>
 
-|
-
-<a href="/projects/">
-    Browse Projects
-</a>
-
-|
-
-<a href="/admin/">
-    Admin
-</a>
-
-<hr>
-
-<h1>Browse Projects</h1>
-
-{% for project in projects %}
-
-<h3>{{ project.title }}</h3>
-
-<p>
-Required Skills:
-{{ project.required_skills }}
-</p>
-
-<p>
-Owner:
-{{ project.owner }}
-</p>
-
-<a href="{% url 'project_detail' project.id %}">
-    View Project
-</a>
-
-<hr>
-
-{% endfor %}
+                    <div class="project-card__footer">
+                        <span class="project-card__seats">Max members: {{ project.max_members }}</span>
+                        <a href="{% url 'project_detail' project.id %}" class="btn btn--amber btn--sm">View</a>
+                    </div>
+                </article>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="empty-state">
+            <span class="empty-state__icon">0</span>
+            <h3>No projects found</h3>
+            <p>Try a different search or create a new project.</p>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

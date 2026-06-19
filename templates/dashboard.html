@@ -1,108 +1,75 @@
-<h1>Dashboard</h1>
+{% extends "base.html" %}
 
-<h2>
-Welcome {{ request.user.username }}
-</h2>
+{% block content %}
+<div class="wrap">
+    <header class="dash-head">
+        <p class="dash-head__eyebrow">Control Center</p>
+        <h1>Welcome {{ request.user.username }}</h1>
+    </header>
 
-<hr>
+    <div class="dash-grid">
+        <section class="dash-panel">
+            <div class="dash-panel__head">
+                <h2>My Projects</h2>
+                <span class="dash-panel__count">{{ my_projects|length }}</span>
+            </div>
+            <ul class="dash-list">
+                {% for project in my_projects %}
+                    <li class="dash-row">
+                        <div class="dash-row__main">
+                            <span class="dash-row__title">{{ project.title }}</span>
+                        </div>
+                    </li>
+                {% empty %}
+                    <li class="dash-empty">No projects created.</li>
+                {% endfor %}
+            </ul>
+        </section>
 
-<h2>My Projects</h2>
+        <section class="dash-panel">
+            <div class="dash-panel__head">
+                <h2>Applications Sent</h2>
+                <span class="dash-panel__count">{{ applications_sent|length }}</span>
+            </div>
+            <ul class="dash-list">
+                {% for application in applications_sent %}
+                    <li class="dash-row">
+                        <div class="dash-row__main">
+                            <span class="dash-row__title">{{ application.project.title }}</span>
+                            <span class="dash-row__meta">Status: {{ application.status }}</span>
+                        </div>
+                    </li>
+                {% empty %}
+                    <li class="dash-empty">No applications sent.</li>
+                {% endfor %}
+            </ul>
+        </section>
 
-<h1>Dashboard</h1>
-
-<a href="/">Home</a>
-
-|
-
-<a href="/project/create/">Create Project</a>
-
-|
-
-<a href="/projects/">Browse Projects</a>
-
-|
-
-<form action="/logout/" method="post" style="display:inline;">
-    {% csrf_token %}
-    <button type="submit">Logout</button>
-</form>
-
-<hr>
-
-{% for project in my_projects %}
-
-    <p>
-        {{ project.title }}
-    </p>
-
-{% empty %}
-
-    <p>
-        No projects created.
-    </p>
-
-{% endfor %}
-
-<hr>
-
-<h2>Applications Sent</h2>
-
-{% for application in applications_sent %}
-
-    <p>
-
-        {{ application.project.title }}
-
-        -
-
-        {{ application.status }}
-
-    </p>
-
-{% empty %}
-
-    <p>
-        No applications sent.
-    </p>
-
-{% endfor %}
-
-<hr>
-
-<h2>Requests Received</h2>
-
-{% for request_obj in requests_received %}
-
-<p>
-
-Applicant:
-{{ request_obj.applicant }}
-
-|
-
-Project:
-{{ request_obj.project.title }}
-
-|
-
-Status:
-{{ request_obj.status }}
-
-</p>
-
-{% if request_obj.status == 'pending' %}
-
-<a href="{% url 'accept_request' request_obj.id %}">
-    Accept
-</a>
-
-<a href="{% url 'reject_request' request_obj.id %}">
-    Reject
-</a>
-
-{% endif %}
-
-<hr>
-
-{% endfor %}
+        <section class="dash-panel">
+            <div class="dash-panel__head">
+                <h2>Requests Received</h2>
+                <span class="dash-panel__count">{{ requests_received|length }}</span>
+            </div>
+            <ul class="dash-list">
+                {% for request_obj in requests_received %}
+                    <li class="dash-row">
+                        <div class="dash-row__main">
+                            <span class="dash-row__title">{{ request_obj.applicant }}</span>
+                            <span class="dash-row__meta">Project: {{ request_obj.project.title }} | Status: {{ request_obj.status }}</span>
+                        </div>
+                        {% if request_obj.status == 'pending' %}
+                            <div class="dash-row__actions">
+                                <a href="{% url 'accept_request' request_obj.id %}" class="btn btn--primary btn--sm">Accept</a>
+                                <a href="{% url 'reject_request' request_obj.id %}" class="btn btn--danger-ghost btn--sm">Reject</a>
+                            </div>
+                        {% endif %}
+                    </li>
+                {% empty %}
+                    <li class="dash-empty">No requests received.</li>
+                {% endfor %}
+            </ul>
+        </section>
+    </div>
+</div>
+{% endblock %}
 

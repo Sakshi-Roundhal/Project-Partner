@@ -1,13 +1,16 @@
-<h1>Register</h1>
+{% extends "base.html" %}
 
-<form method="POST">
+{% block content %}
+<div class="wrap form-page">
+    <section class="form-card">
+        <p class="form-card__eyebrow">New Here?</p>
+        <h1>Register</h1>
 
-    {% csrf_token %}
-
-    {{ form.as_p }}
-
-    <button type="submit">
-        Register
-    </button>
-
-</form>
+        <form method="POST" class="djform">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn--primary btn--block">Register</button>
+        </form>
+    </section>
+</div>
+{% endblock %}
